@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Agendamento - Banho & Tosa</title>
+    <!-- Google Font - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- html2canvas para gerar a imagem do formulário -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --color-light-pink: #f7e1e6;
+            --color-light-blue: #d4eaf7;
+            --color-light-green: #e1f7d4;
+            --color-light-yellow: #fff7d4;
+            --color-accent-blue: #5b92e5;
+            --color-accent-green: #8fd082;
+            --color-accent-yellow: #f2c75a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-light-blue);
+        }
+        
+        /* Estilos personalizados para os ícones de lista */
+        .list-icon {
+            color: var(--color-accent-green);
+        }
+
+        /* Esconder o checkbox original */
+        input[type="checkbox"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 0.375rem; /* rounded-md */
+            border: 2px solid var(--color-accent-green);
+            background-color: #fff;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+        }
+
+        /* Estilo do checkbox customizado quando marcado */
+        input[type="checkbox"]:checked {
+            background-color: var(--color-accent-green);
+            border-color: var(--color-accent-green);
+        }
+        
+        /* Ícone de check dentro do checkbox */
+        input[type="checkbox"]:checked::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem;
+        }
+
+        /* Estilo para os radio buttons */
+        input[type="radio"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            border: 2px solid var(--color-accent-blue);
+            background-color: #fff;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+        }
+
+        input[type="radio"]:checked {
+            border: 5px solid var(--color-accent-blue);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    
+    <div id="form-container" class="bg-white p-6 md:p-10 lg:p-12 rounded-3xl shadow-2xl max-w-4xl mx-auto my-8">
+        <!-- Cabeçalho -->
+        <header class="text-center mb-10">
+            <div class="flex items-center justify-center space-x-4 mb-2">
+                <span class="text-4xl">🐶</span>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">Pet Love & Care</h1>
+                <span class="text-4xl">🐱</span>
+            </div>
+            <p class="text-xl text-gray-600 italic">Cuidando com amor de quem te dá amor ❤️🐾</p>
+        </header>
+
+        <form>
+            <!-- Divisor visual -->
+            <div class="h-1 bg-gradient-to-r from-green-300 via-yellow-300 to-pink-300 rounded-full mb-8"></div>
+            
+            <!-- Dados do Tutor e do Pet -->
+            <section class="mb-10">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <span class="text-3xl mr-2">📝</span> Dados do Tutor e do Pet
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="tutor-name" class="block text-gray-700 font-medium mb-1">Nome do Tutor</label>
+                        <input type="text" id="tutor-name" name="tutor-name" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Ex: João Silva">
+                    </div>
+                    <div>
+                        <label for="tutor-phone" class="block text-gray-700 font-medium mb-1">Telefone/WhatsApp</label>
+                        <input type="tel" id="tutor-phone" name="tutor-phone" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="(XX) XXXXX-XXXX">
+                    </div>
+                    <div>
+                        <label for="pet-name" class="block text-gray-700 font-medium mb-1">Nome do Pet</label>
+                        <input type="text" id="pet-name" name="pet-name" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Ex: Rex">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">Espécie</label>
+                        <div class="flex space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="species" value="dog" class="form-radio text-accent-blue">
+                                <span class="ml-1 text-gray-700">Cachorro 🐶</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="species" value="cat" class="form-radio text-accent-blue">
+                                <span class="ml-1 text-gray-700">Gato 🐱</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="pet-breed" class="block text-gray-700 font-medium mb-1">Raça</label>
+                        <input type="text" id="pet-breed" name="pet-breed" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Ex: Golden Retriever">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="pet-weight" class="block text-gray-700 font-medium mb-1">Peso (kg)</label>
+                            <input type="number" step="0.1" id="pet-weight" name="pet-weight" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Ex: 15.5">
+                        </div>
+                        <div>
+                            <label for="pet-age" class="block text-gray-700 font-medium mb-1">Idade (anos)</label>
+                            <input type="number" id="pet-age" name="pet-age" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Ex: 2">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="service-date" class="block text-gray-700 font-medium mb-1">Data do Serviço</label>
+                        <input type="date" id="service-date" name="service-date" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue">
+                    </div>
+                    <div>
+                        <label for="service-time" class="block text-gray-700 font-medium mb-1">Horário do Serviço</label>
+                        <input type="time" id="service-time" name="service-time" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Divisor visual -->
+            <div class="h-1 bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-300 rounded-full mb-8"></div>
+
+            <!-- Lista de Serviços -->
+            <section class="mb-10">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <span class="text-3xl mr-2">🛁</span> Lista de Serviços
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4">
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Banho avulso" data-price="50">
+                        <span>Banho Avulso</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Pacote semanal" data-price="120">
+                        <span>Pacote Semanal</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Pacote quinzenal" data-price="70">
+                        <span>Pacote Quinzenal</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Banho + Tosa completa" data-price="80">
+                        <span>Banho + Tosa Completa</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Banho + Tosa higienica" data-price="60">
+                        <span>Banho + Tosa Higiênica</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Banho medicinal" data-price="50">
+                        <span>Banho Medicinal</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Hidratacao" data-price="25">
+                        <span>Hidratação</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Desembolo de pelos" data-price="20">
+                        <span>Desembolo de Pelos</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Tosa na tesoura" data-price="45">
+                        <span>Tosa na Tesoura</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Tosa na maquina" data-price="40">
+                        <span>Tosa na Máquina</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="services" value="Servico express" data-price="15">
+                        <span>Serviço Express</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Divisor visual -->
+            <div class="h-1 bg-gradient-to-r from-yellow-300 via-pink-300 to-green-300 rounded-full mb-8"></div>
+            
+            <!-- Opções de Tosa -->
+            <section class="mb-10">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <span class="text-3xl mr-2">✂️</span> Opções de Tosa
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="radio" name="grooming-options" value="Tosa Padrao">
+                        <span>Tosa Padrão da Raça</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="radio" name="grooming-options" value="Tosa Baixa">
+                        <span>Tosa Baixa</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="radio" name="grooming-options" value="Tosa Bebe">
+                        <span>Tosa Bebê</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="radio" name="grooming-options" value="Tosa Leao">
+                        <span>Tosa Leão (para gatos)</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="radio" name="grooming-options" value="Tosa Personalizada">
+                        <span>Personalizada:</span>
+                    </label>
+                    <input type="text" name="custom-grooming" class="w-full md:col-span-2 px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Descreva o estilo da tosa personalizada">
+                </div>
+            </section>
+
+            <!-- Divisor visual -->
+            <div class="h-1 bg-gradient-to-r from-indigo-300 via-pink-300 to-yellow-300 rounded-full mb-8"></div>
+            
+            <!-- Detalhes do Banho -->
+            <section class="mb-10">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <span class="text-3xl mr-2">🧴</span> Detalhes do Banho
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4">
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="shampoo" value="neutro">
+                        <span>Shampoo neutro</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="shampoo" value="antialergico">
+                        <span>Shampoo antialérgico</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="shampoo" value="antipulgas">
+                        <span>Shampoo antipulgas</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="shampoo" value="medicamentoso">
+                        <span>Shampoo medicamentoso</span>
+                    </label>
+                </div>
+                <div class="mt-6">
+                    <label class="block text-gray-700 font-medium mb-1">Perfume</label>
+                    <div class="flex items-center space-x-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="perfume-intensity" value="Leve">
+                            <span class="ml-1 text-gray-700">Leve</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="perfume-intensity" value="Medio">
+                            <span class="ml-1 text-gray-700">Médio</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="perfume-intensity" value="Forte">
+                            <span class="ml-1 text-gray-700">Forte</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Divisor visual -->
+            <div class="h-1 bg-gradient-to-r from-pink-300 via-green-300 to-blue-300 rounded-full mb-8"></div>
+            
+            <!-- Serviços Extras -->
+            <section class="mb-10">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <span class="text-3xl mr-2">✨</span> Serviços Extras
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4">
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="extras" value="Limpeza de ouvidos" data-price="10">
+                        <span>Limpeza de ouvidos</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="extras" value="Limpeza de glandulas" data-price="15">
+                        <span>Limpeza de glândulas</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="extras" value="Corte de unhas" data-price="10">
+                        <span>Corte de unhas</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="extras" value="Escovacao de dentes" data-price="15">
+                        <span>Escovação de dentes</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="extras" value="Laco/gravata" data-price="5">
+                        <span>Laço / Gravata</span>
+                    </label>
+                    <label class="flex items-center text-gray-700 cursor-pointer">
+                        <input type="checkbox" name="extras" value="Colonia premium" data-price="10">
+                        <span>Colônia premium</span>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Divisor visual -->
+            <div class="h-1 bg-gradient-to-r from-blue-300 via-purple-300 to-red-300 rounded-full mb-8"></div>
+            
+            <!-- Observações do Tutor -->
+            <section class="mb-10">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <span class="text-3xl mr-2">💬</span> Observações do Tutor
+                </h2>
+                <textarea name="tutor-notes" rows="4" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Adicione aqui instruções ou preferências especiais para o banho e tosa do seu pet."></textarea>
+            </section>
+
+            <!-- Divisor visual -->
+            <div class="h-1 bg-gradient-to-r from-red-300 via-yellow-300 to-green-300 rounded-full mb-8"></div>
+            
+            <!-- Valores e Pagamento -->
+            <section class="mb-10">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <span class="text-3xl mr-2">💰</span> Valores e Pagamento
+                </h2>
+                <div class="bg-gray-100 rounded-xl p-6 shadow-inner">
+                    <table class="w-full text-left table-auto border-separate border-spacing-y-2">
+                        <thead>
+                            <tr class="text-gray-600 font-semibold">
+                                <th class="p-2">Serviço</th>
+                                <th class="p-2 text-right">Valor (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Linhas de serviços dinâmicas -->
+                            <tr id="service-row" class="text-gray-700">
+                                <td class="p-2">Serviços Selecionados</td>
+                                <td id="service-price" class="p-2 text-right font-medium">0,00</td>
+                            </tr>
+                            <tr id="extras-row" class="text-gray-700">
+                                <td class="p-2">Serviços Extras</td>
+                                <td id="extras-price" class="p-2 text-right font-medium">0,00</td>
+                            </tr>
+                            <tr class="font-bold text-lg text-gray-800">
+                                <td class="p-2">Total</td>
+                                <td id="total-price" class="p-2 text-right">0,00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Forma de Pagamento</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="payment-method" value="Pix">
+                            <span class="ml-1 text-gray-700">Pix</span>
+                        </label>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="payment-method" value="Dinheiro">
+                            <span class="ml-1 text-gray-700">Dinheiro</span>
+                        </label>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="payment-method" value="Cartao">
+                            <span class="ml-1 text-gray-700">Cartão</span>
+                        </label>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="radio" name="payment-method" value="Outros">
+                            <span class="ml-1 text-gray-700">Outros</span>
+                        </label>
+                        <input type="text" name="other-payment" class="w-full sm:w-auto px-4 py-2 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Especifique">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Divisor visual -->
+            <div class="h-1 bg-gradient-to-r from-green-300 via-yellow-300 to-pink-300 rounded-full mb-8"></div>
+            
+            <!-- Observações da Equipe -->
+            <section class="mb-10">
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-6 flex items-center">
+                    <span class="text-3xl mr-2">🐾</span> Observações da Equipe
+                </h2>
+                <textarea name="team-notes" rows="4" class="w-full px-4 py-3 bg-gray-100 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent-blue" placeholder="Espaço para anotações internas da equipe sobre o atendimento, comportamento do pet, etc."></textarea>
+            </section>
+        </form>
+
+        <!-- Seção de Ações -->
+        <div class="text-center mt-12">
+            <button id="generate-image-btn" class="bg-accent-blue text-white font-bold py-4 px-8 rounded-full shadow-lg hover:bg-blue-600 transition duration-300 ease-in-out transform hover:scale-105">
+                Gerar e Enviar para WhatsApp 🚀
+            </button>
+        </div>
+
+        <!-- Área de visualização da imagem e botão de WhatsApp -->
+        <div id="result-area" class="mt-8 hidden">
+            <div id="image-preview" class="border border-dashed border-gray-400 p-4 rounded-xl text-center">
+                <!-- A imagem gerada será inserida aqui -->
+            </div>
+            <div class="text-center mt-6">
+                <a id="whatsapp-link" href="#" target="_blank" class="inline-block bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-green-600 transition duration-300 ease-in-out">
+                    Enviar para WhatsApp 📲
+                </a>
+            </div>
+            <p id="whatsapp-message" class="text-sm text-center text-gray-500 mt-2">
+                A imagem foi gerada. Clique no botão acima para enviar via WhatsApp. Você pode precisar salvar a imagem e enviá-la manualmente.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Seleciona todos os checkboxes e inputs com atributo data-price
+            const servicesCheckboxes = document.querySelectorAll('input[name="services"]');
+            const extrasCheckboxes = document.querySelectorAll('input[name="extras"]');
+            
+            // Seleciona os elementos da tabela de preços
+            const servicePriceEl = document.getElementById('service-price');
+            const extrasPriceEl = document.getElementById('extras-price');
+            const totalPriceEl = document.getElementById('total-price');
+            
+            // Seleciona os novos elementos para a funcionalidade de imagem e WhatsApp
+            const formContainer = document.getElementById('form-container');
+            const generateImageBtn = document.getElementById('generate-image-btn');
+            const resultArea = document.getElementById('result-area');
+            const imagePreview = document.getElementById('image-preview');
+            const whatsappLink = document.getElementById('whatsapp-link');
+
+            /**
+             * Calcula e atualiza o preço total na tabela.
+             */
+            const updateTotalPrice = () => {
+                let servicesTotal = 0;
+                let extrasTotal = 0;
+
+                // Calcula o total dos serviços principais
+                servicesCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        servicesTotal += parseFloat(checkbox.dataset.price);
+                    }
+                });
+
+                // Calcula o total dos serviços extras
+                extrasCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        extrasTotal += parseFloat(checkbox.dataset.price);
+                    }
+                });
+
+                const total = servicesTotal + extrasTotal;
+
+                // Atualiza o texto na tabela, formatando para BRL
+                servicePriceEl.textContent = servicesTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                extrasPriceEl.textContent = extrasTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                totalPriceEl.textContent = total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            };
+
+            // Adiciona event listeners para atualizar o preço quando um checkbox é clicado
+            servicesCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateTotalPrice);
+            });
+            extrasCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateTotalPrice);
+            });
+
+            // Chama a função inicialmente para garantir que a tabela mostre 0,00
+            updateTotalPrice();
+
+            // Lógica para gerar a imagem e o link do WhatsApp
+            generateImageBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Impede o envio do formulário
+                
+                // Esconde o botão de geração para que ele não apareça na imagem
+                generateImageBtn.style.display = 'none';
+
+                // Mostra a área de resultados e um indicador de carregamento
+                resultArea.classList.remove('hidden');
+                imagePreview.innerHTML = '<p class="text-center text-gray-500 italic">Gerando imagem, por favor aguarde...</p>';
+
+                // Captura a imagem do contêiner do formulário
+                html2canvas(formContainer).then(canvas => {
+                    // Limpa o conteúdo da área de visualização e insere a imagem
+                    imagePreview.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = canvas.toDataURL('image/png');
+                    img.classList.add('w-full', 'rounded-xl', 'shadow-lg');
+                    imagePreview.appendChild(img);
+
+                    // Reexibe o botão de geração
+                    generateImageBtn.style.display = 'block';
+
+                    // Pega o nome do pet para o link do WhatsApp
+                    const petName = document.getElementById('pet-name').value || 'o pet';
+                    const message = `Olá, agendei um serviço para o meu pet: ${petName}. Segue a ficha completa na imagem.`;
+                    
+                    // Número de telefone do pet shop no formato internacional (ex: 55 DDD NÚMERO)
+                    const phoneNumber = '55177997030285'; // ALtere aqui para o número de telefone correto
+                    
+                    // Configura o link do WhatsApp com a mensagem
+                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    whatsappLink.href = whatsappUrl;
+                }).catch(error => {
+                    console.error('Erro ao gerar a imagem:', error);
+                    imagePreview.innerHTML = '<p class="text-center text-red-500">Ocorreu um erro ao gerar a imagem. Tente novamente.</p>';
+                    generateImageBtn.style.display = 'block';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
